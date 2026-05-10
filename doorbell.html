@@ -1,76 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Smart Doorbell</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://cdn.jsdelivr.net/npm/mqtt@5.3.5/dist/mqtt.min.js"></script>
-<style>
-body{font-family:Arial;text-align:center;margin-top:30px;background:#222;color:#fff}
-h1{color:#0ff;margin-bottom:10px}
-.status{font-size:14px;color:#0f0;margin-bottom:20px}
-.status.offline{color:#f00}
-button{width:85%;padding:25px;margin:12px;font-size:24px;border:none;border-radius:12px;cursor:pointer}
-button:disabled{background:#555;color:#888}
-.normal{background:#0a0;color:#fff}
-.delivery{background:#fa0;color:#000}
-.emergency{background:#a00;color:#fff}
-.footer{margin-top:30px;font-size:12px;color:#888}
-</style>
-</head>
 <body>
-<h1>Smart Doorbell</h1>
-<div id="status" class="status offline">Connecting...</div>
-<p>Tap a button to ring</p>
-<button class="normal" onclick="ring('normal')" disabled>Normal Visitor</button>
-<button class="delivery" onclick="ring('delivery')" disabled>Package Delivery</button>
-<button class="emergency" onclick="ring('emergency')" disabled>Emergency</button>
-<div class="footer">Please close this page when done</div>
-
-<script>
-const broker = 'wss://broker.hivemq.com:8884/mqtt';
-const topic = 'home/doorbell/ring';
-const clientId = 'web_doorbell_' + Math.random().toString(16).substr(2, 8);
-
-const statusEl = document.getElementById('status');
-const buttons = document.querySelectorAll('button');
-
-const client = mqtt.connect(broker, {
-    clientId: clientId,
-    clean: true,
-    connectTimeout: 4000,
-});
-
-client.on('connect', () => {
-    console.log('Connected to MQTT');
-    statusEl.textContent = 'Online - Ready to ring';
-    statusEl.classList.remove('offline');
-    buttons.forEach(btn => btn.disabled = false);
-});
-
-client.on('error', (err) => {
-    console.log('Connection error:', err);
-    statusEl.textContent = 'Offline - Refresh page';
-    statusEl.classList.add('offline');
-    buttons.forEach(btn => btn.disabled = true);
-});
-
-client.on('offline', () => {
-    statusEl.textContent = 'Offline - Check internet';
-    statusEl.classList.add('offline');
-    buttons.forEach(btn => btn.disabled = true);
-});
-
-function ring(mode) {
-    if (client.connected) {
-        client.publish(topic, mode);
-        console.log('Sent:', mode);
-        // Visual feedback
-        event.target.style.opacity = '0.5';
-        setTimeout(() => { event.target.style.opacity = '1'; }, 200);
-    } else {
-        alert('Not connected. Refresh page.');
-    }
-}
-</script>
+<h1>Smart Doorbell Test</h1>
+<button onclick="alert('Button works')">Normal</button>
+<button onclick="alert('Button works')">Delivery</button>
+<button onclick="alert('Button works')">Emergency</button>
 </body>
 </html>
